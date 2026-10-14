@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAD OAB/SP | Simulador de Honorários</title>
+<style>
+:root{--navy:#192933;--blue:#3038c9;--red:#b42318;--ink:#202a30;--muted:#65727c;--line:#dce3e8;--bg:#f3f6f8;--white:#fff;--soft:#eef0ff;--green:#176b4d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,"Segoe UI",Arial,sans-serif}header{background:var(--navy);color:#fff;padding:22px max(22px,calc((100% - 1120px)/2));display:flex;align-items:center;gap:14px}.logo{width:46px;height:46px;border-radius:12px;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:900;font-size:15px}header h1{font-size:18px;margin:0}header p{margin:3px 0 0;color:#d2dce1;font-size:12px}.wrap{max-width:1120px;margin:28px auto;padding:0 18px 40px}.intro{margin-bottom:20px}.intro h2{font-size:27px;line-height:1.2;margin:0 0 8px;letter-spacing:-.5px}.intro p{color:var(--muted);margin:0;max-width:850px}.notice{border:1px solid #e6d7a7;background:#fff9e8;color:#6b5014;border-radius:12px;padding:13px 15px;margin:18px 0;font-size:12px}.panel{background:#fff;border:1px solid var(--line);border-radius:15px;margin:16px 0;overflow:hidden;box-shadow:0 6px 18px #19293308}.ph{padding:17px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}.ph strong{font-size:15px}.tag{font-size:11px;color:var(--blue);background:var(--soft);border-radius:999px;padding:5px 9px;font-weight:800}.pb{padding:20px}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.field{grid-column:span 4;min-width:0}.field.s6{grid-column:span 6}.field.s8{grid-column:span 8}.field.s12{grid-column:span 12}label{display:block;font-weight:700;font-size:12px;margin-bottom:7px}.control{width:100%;border:1px solid #cfd8de;border-radius:9px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit;min-height:42px}.control:focus{outline:3px solid #3038c91b;border-color:var(--blue)}.help{font-size:11px;color:var(--muted);margin-top:5px}.btn{border:0;border-radius:9px;padding:11px 16px;font-weight:750;font-size:13px;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:#fff;border:1px solid var(--line);color:var(--navy)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.result{display:none}.result.show{display:block}.amount{font-size:30px;font-weight:850;letter-spacing:-.5px}.muted{color:var(--muted)}.resultbox{background:#f7f8ff;border:1px solid #dfe2ff;border-radius:12px;padding:16px;margin-bottom:14px}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini{border:1px solid var(--line);border-radius:10px;padding:13px}.mini small{display:block;color:var(--muted);font-size:11px;margin-bottom:4px}.mini strong{font-size:16px}.schedule{width:100%;border-collapse:collapse;margin-top:12px}.schedule th,.schedule td{text-align:left;padding:10px;border-bottom:1px solid var(--line);font-size:12px}.schedule th{background:#f7f9fa;color:#53616b}.warning{padding:12px 14px;border-radius:10px;background:#fff4f2;color:#8c261e;border:1px solid #f0cbc6;font-size:12px;margin-top:12px}.ok{padding:12px 14px;border-radius:10px;background:#effaf4;color:#176b4d;border:1px solid #cbe9d8;font-size:12px;margin-top:12px}.footer{color:var(--muted);font-size:11px;text-align:center;padding:15px}.hidden{display:none!important}@media(max-width:700px){.field,.field.s6,.field.s8{grid-column:span 12}.split{grid-template-columns:1fr}.intro h2{font-size:23px}header{padding:18px}.wrap{margin:20px auto;padding:0 12px 30px}.pb{padding:16px}.ph{padding:15px 16px}}
+@media print{body{background:#fff}.panel{box-shadow:none}.actions,header .logo{display:none}.wrap{max-width:none;margin:0}.result{display:block!important}}
+</style></head><body>
+<header><div class="logo">CAD</div><div><h1>Comissão da Advocacia Dativa · OAB/SP</h1><p>Simulador de honorários do Convênio de Assistência Judiciária</p></div></header>
+<main class="wrap">
+<div class="intro"><h2>Simulador de Honorários</h2><p>Selecione o código da ação e informe a situação processual. O simulador aplica os valores do Anexo II e os critérios de pagamento descritos na minuta anexada.</p></div>
+<div class="notice"><strong>Atenção:</strong> referência de valores: Tabela de Honorários do Anexo II, indicada como vigente a partir de 01/05/2026. O resultado é uma estimativa para conferência, não substitui a certidão, a análise do caso concreto nem o sistema oficial. A minuta fornecida não contém tabelas históricas anteriores a essa data.</div>
+<form id="form">
+<section class="panel"><div class="ph"><strong>1. Identificação da ação</strong><span class="tag">TABELA OFICIAL ANEXO II</span></div><div class="pb"><div class="grid">
+<div class="field s6"><label for="area">Área / grupo da tabela *</label><select id="area" class="control" required></select></div>
+<div class="field s6"><label for="codigo">Código e natureza da ação *</label><select id="codigo" class="control" required><option value="">Selecione a área primeiro</option></select></div>
+<div class="field s6"><label for="dataEvento">Data do último ato processual da certidão</label><input id="dataEvento" type="date" class="control"><div class="help">A minuta estabelece que vale a tabela vigente na última data processual constante da certidão (plantões seguem a data da indicação).</div></div>
+<div class="field s6"><label for="dataProtocolo">Data de protocolo/cadastro da certidão *</label><input id="dataProtocolo" type="date" class="control" required><div class="help">Cadastro até o dia 25: pagamento no primeiro dia útil do segundo mês seguinte. A partir do dia 26: pagamento no primeiro dia útil do terceiro mês seguinte.</div></div>
+<div class="field s6"><label for="modo">Tipo de atuação *</label><select id="modo" class="control" required><option value="integral">Atuação integral</option><option value="parcial">Atuação parcial / hipótese especial</option><option value="abandono">Abandono injustificado</option></select></div>
+<div class="field s12 hidden" id="parcialWrap"><label for="parcial">Hipótese de atuação parcial *</label><select id="parcial" class="control"><option value="">Selecione a hipótese</option><option value="30">Renúncia autorizada pela Defensoria (art. 12) — até 30%</option><option value="30">Usuário constituiu advogado particular, com atuação do conveniado (art. 16, I) — 30%</option><option value="30">Extinção por incompetência superveniente sem culpa do advogado (art. 16, II) — 30%</option><option value="30">Nomeação após sentença para fase recursal/cumprimento (art. 16, III) — 30%</option><option value="60">Nomeação para continuar processo em andamento até sentença/trânsito (art. 16, IV) — 60%</option></select></div>
+</div></div></section>
+<section class="panel" id="rulePanel"><div class="ph"><strong>2. Regras do caso concreto</strong><span class="tag">CRITÉRIOS DO CONVÊNIO</span></div><div class="pb">
+<div class="grid">
+<div class="field s6" id="familiaRegraWrap"><label for="regra">Regra processual aplicável *</label><select id="regra" class="control"></select><div class="help">Em Infância e Juventude, selecione a regra cível ou criminal correspondente ao procedimento.</div></div>
+<div class="field s6" id="parteWrap"><label for="parte">Parte representada *</label><select id="parte" class="control"><option value="autor">Parte autora</option><option value="reu">Parte ré</option></select></div>
+<div class="field s6" id="resultadoCivilWrap"><label for="resultadoCivil">Resultado / situação cível *</label><select id="resultadoCivil" class="control">
+<option value="autor_total">Procedência total do pedido</option><option value="autor_parcial">Procedência parcial do pedido</option><option value="autor_improcedente">Improcedência total do pedido</option><option value="acordo_duplo">Acordo homologado — um advogado para cada parte</option><option value="acordo_unico">Acordo homologado — único advogado para todas as partes</option><option value="extincao485">Extinção sem resolução de mérito (art. 485 CPC)</option></select></div>
+<div class="field s6 hidden" id="incisoWrap"><label for="inciso">Inciso do art. 485 do CPC *</label><select id="inciso" class="control"><option value="I">I — indeferimento da petição inicial</option><option value="II">II — processo parado por mais de 1 ano</option><option value="III">III — abandono da causa pelo autor</option><option value="IV">IV — ausência de pressupostos processuais</option><option value="V">V — perempção, litispendência ou coisa julgada</option><option value="VI">VI — ausência de legitimidade/interesse</option><option value="VII">VII — convenção de arbitragem</option><option value="VIII">VIII — homologação da desistência</option><option value="IX">IX — morte da parte, ação intransmissível</option><option value="X">X — demais casos previstos em lei</option></select></div>
+<div class="field s6 hidden" id="provaIntimacaoWrap"><label for="provaIntimacao">Autor comprova intimação pessoal prévia (incisos II/III)? *</label><select id="provaIntimacao" class="control"><option value="sim">Sim</option><option value="nao">Não</option></select></div>
+<div class="field s6 hidden" id="autorSemCulpaWrap"><label for="autorSemCulpa">Advogado do autor comprova que não deu causa à extinção? *</label><select id="autorSemCulpa" class="control"><option value="nao">Não</option><option value="sim">Sim — com recurso de pagamento e documentos</option></select></div>
+<div class="field s6" id="recursoWrap"><label for="recurso">Houve recurso relacionado à sentença? *</label><select id="recurso" class="control"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+<div class="field s6 hidden" id="contrarrazoesWrap"><label for="contrarrazoes">Contrarrazões apresentadas, quando exigidas? *</label><select id="contrarrazoes" class="control"><option value="sim">Sim</option><option value="nao">Não</option></select></div>
+<div class="field s6 hidden" id="resultadoCriminalWrap"><label for="resultadoCriminal">Resultado criminal *</label><select id="resultadoCriminal" class="control"><option value="absolutoria">Absolutória</option><option value="condenatoria">Condenatória</option><option value="extincao">Extinção da punibilidade</option><option value="pronuncia">Pronúncia (júri, primeira fase)</option><option value="impronuncia">Impronúncia / desclassificação / absolvição sumária (júri, primeira fase)</option><option value="segundo_juri">Realização de segundo júri</option></select></div>
+<div class="field s6 hidden" id="suspensaoWrap"><label for="suspensao">Suspensão condicional: situação *</label><select id="suspensao" class="control"><option value="concessao">Decisão que concede a suspensão</option><option value="cumprimento">Cumprimento do período de prova e extinção</option><option value="rev_absolutoria_sem">Revogação — absolvição sem recurso</option><option value="rev_absolutoria_com">Revogação — absolvição com recurso da acusação</option><option value="rev_condenatoria">Revogação — condenação total ou parcial</option></select></div>
+<div class="field s6 hidden" id="júriFaseWrap"><label for="juriFase">Fase do Tribunal do Júri *</label><select id="juriFase" class="control"><option value="primeira">Primeira fase (até pronúncia)</option><option value="segunda">Segunda fase (pronúncia ao final)</option></select></div>
+<div class="field s6 hidden" id="art366Wrap"><label for="art366">Houve produção antecipada de provas efetivada? *</label><select id="art366" class="control"><option value="sim">Sim</option><option value="nao">Não</option></select></div>
+<div class="field s6 hidden" id="extincaoWrap"><label for="extincao">Extinção penal decorreu de cumprimento de ANPP? *</label><select id="extincao" class="control"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+</div>
+<div class="help" id="ruleHelp">Os campos exibidos variam conforme a área e a hipótese selecionada.</div>
+<div class="actions"><button type="submit" class="btn primary">Calcular estimativa</button><button type="button" id="limpar" class="btn secondary">Limpar campos</button></div>
+</div></section></form>
+<section class="panel result" id="result" aria-live="polite"><div class="ph"><strong>3. Resultado da simulação</strong><span class="tag">PRÉVIA</span></div><div class="pb" id="resultContent"></div></section>
+<div class="footer">CAD · OAB/SP — Ferramenta de apoio à conferência. Consulte sempre a minuta, os termos do Convênio e a certidão emitida.</div>
+</main>
+<script>
+const FEES = [{"area": "Cível", "code": "103", "name": "Execução de Título Extrajudicial e Judicial", "fees": {"100": 1101.61, "70": 771.13, "60": 660.97, "30": 330.48}}, {"area": "Cível", "code": "101", "name": "Procedimento Ordinário / Comum (Residual)", "fees": {"100": 1597.69, "70": 1118.38, "60": 958.61, "30": 479.31}}, {"area": "Cível", "code": "117", "name": "Medida Protetiva à mulher vítima de violência doméstica", "fees": {"100": 219.55, "70": null, "60": null, "30": null}}, {"area": "Cível", "code": "116", "name": "Juizado Especial Cível e da Fazenda Pública", "fees": {"100": 436.66, "70": 305.66, "60": 262.0, "30": 131.0}}, {"area": "Cível", "code": "114", "name": "Processos Cautelares", "fees": {"100": 1125.45, "70": 787.82, "60": 675.27, "30": 337.64}}, {"area": "Cível", "code": "105", "name": "Embargos de Terceiros", "fees": {"100": 1101.61, "70": 771.13, "60": 660.97, "30": 330.48}}, {"area": "Cível", "code": "104", "name": "Declaratórias", "fees": {"100": 1101.61, "70": 771.13, "60": 660.97, "30": 330.48}}, {"area": "Cível", "code": "113", "name": "Mandado de Segurança", "fees": {"100": 1080.42, "70": 756.29, "60": 648.25, "30": 324.13}}, {"area": "Cível", "code": "112", "name": "Revisional de Aluguel", "fees": {"100": 1125.45, "70": 787.82, "60": 675.27, "30": 337.64}}, {"area": "Cível", "code": "111", "name": "Ações Locatícias", "fees": {"100": 1125.45, "70": 787.82, "60": 675.27, "30": 337.64}}, {"area": "Cível", "code": "110", "name": "Anulação e Retificação de Registro", "fees": {"100": 1125.45, "70": 787.82, "60": 675.27, "30": 337.64}}, {"area": "Cível", "code": "109", "name": "Nunciação de Obra Nova", "fees": {"100": 1080.42, "70": 756.29, "60": 648.25, "30": 324.13}}, {"area": "Cível", "code": "115", "name": "Curador Especial", "fees": {"100": 838.52, "70": 586.96, "60": 503.11, "30": 251.56}}, {"area": "Cível", "code": "108", "name": "Possessórias (Usucapião)", "fees": {"100": 1620.63, "70": 1134.44, "60": 972.38, "30": 486.19}}, {"area": "Cível", "code": "107", "name": "Consignação em Pagamento", "fees": {"100": 1125.45, "70": 787.82, "60": 675.27, "30": 337.64}}, {"area": "Cível", "code": "106", "name": "Procedimento Especial - Jurisdição Voluntária ou Contenciosa", "fees": {"100": 1620.63, "70": 1134.44, "60": 972.38, "30": 486.19}}, {"area": "Cível", "code": "119", "name": "Monitória", "fees": {"100": 1147.52, "70": 803.26, "60": 688.51, "30": 344.26}}, {"area": "Cível", "code": "118", "name": "Defesa em medida protetiva autônoma", "fees": {"100": 190.92, "70": null, "60": null, "30": null}}, {"area": "Cível", "code": "209", "name": "Pedido de Alvará", "fees": {"100": 803.23, "70": 562.26, "60": 481.94, "30": 240.97}}, {"area": "Família e Sucessões", "code": "200", "name": "Cumprimento de Sentença - Alimentos", "fees": {"100": 523.22, "70": 366.25, "60": 313.93, "30": 156.97}}, {"area": "Família e Sucessões", "code": "115", "name": "Curador Especial", "fees": {"100": 838.52, "70": 586.96, "60": 503.11, "30": 251.56}}, {"area": "Família e Sucessões", "code": "114", "name": "Processos Cautelares", "fees": {"100": 1125.45, "70": 787.82, "60": 675.27, "30": 337.64}}, {"area": "Família e Sucessões", "code": "212", "name": "Sobrepartilha", "fees": {"100": 507.83, "70": 355.48, "60": 304.7, "30": 152.35}}, {"area": "Família e Sucessões", "code": "211", "name": "Separação, divórcio, conv. em divórcio e reconhecimento e dissolução de união estável (consensual e litigosa)", "fees": {"100": 1106.28, "70": 774.4, "60": 663.77, "30": 331.88}}, {"area": "Família e Sucessões", "code": "210", "name": "Modificação ou Regulamento de Guarda / Visitas", "fees": {"100": 1147.53, "70": 803.27, "60": 688.52, "30": 344.26}}, {"area": "Família e Sucessões", "code": "209", "name": "Pedido de Alvará", "fees": {"100": 803.23, "70": 562.26, "60": 481.94, "30": 240.97}}, {"area": "Família e Sucessões", "code": "208", "name": "Emancipação Judicial Outorgada Judic. e Consentimento", "fees": {"100": 666.22, "70": 466.35, "60": 399.73, "30": 199.87}}, {"area": "Família e Sucessões", "code": "207", "name": "Tutela e Curatela", "fees": {"100": 872.06, "70": 610.44, "60": 523.24, "30": 261.62}}, {"area": "Família e Sucessões", "code": "206", "name": "Alimentos (processo de conhecimento)", "fees": {"100": 855.29, "70": 598.7, "60": 513.17, "30": 256.59}}, {"area": "Família e Sucessões", "code": "205", "name": "Investigação de paternidade", "fees": {"100": 1560.57, "70": 1092.4, "60": 936.34, "30": 468.17}}, {"area": "Família e Sucessões", "code": "204", "name": "Anulação de casamento", "fees": {"100": 1418.09, "70": 992.66, "60": 850.85, "30": 425.43}}, {"area": "Família e Sucessões", "code": "201", "name": "Inventários e Arrolamentos", "fees": {"100": 1312.73, "70": 918.91, "60": 787.64, "30": 393.82}}, {"area": "Criminal", "code": "318", "name": "Acordo de não persecução penal", "fees": {"100": 265.09, "70": null, "60": null, "30": null}}, {"area": "Criminal", "code": "317", "name": "Depoimento Especial - Vítimas e Testemunhas e Oitiva de Vítima de Racismo", "fees": {"100": 218.47, "70": null, "60": null, "30": null}}, {"area": "Criminal", "code": "316", "name": "Violência Doméstica", "fees": {"100": 900.75, "70": 630.53, "60": 540.45, "30": 270.23}}, {"area": "Criminal", "code": "310", "name": "Execução Penal", "fees": {"100": 675.29, "70": 472.7, "60": 405.17, "30": 202.59}}, {"area": "Criminal", "code": "309", "name": "Pedido de Reabilitação Criminal", "fees": {"100": 1125.46, "70": 787.82, "60": 675.28, "30": 337.64}}, {"area": "Criminal", "code": "306", "name": "Advogado do Querelante (Queixa-crime Subsidiária da Pública)", "fees": {"100": 1629.64, "70": 1140.75, "60": 977.78, "30": 488.89}}, {"area": "Criminal", "code": "304", "name": "Defesa Júri da Pronúncia ao Final do Processo", "fees": {"100": 1699.24, "70": 1189.47, "60": 1019.54, "30": 509.77}}, {"area": "Criminal", "code": "303", "name": "Defesa Júri até Pronúncia", "fees": {"100": 1147.53, "70": 803.27, "60": 688.52, "30": 344.26}}, {"area": "Criminal", "code": "315", "name": "Rito Sumaríssimo", "fees": {"100": 883.43, "70": 618.4, "60": 530.06, "30": 265.03}}, {"area": "Criminal", "code": "302", "name": "Rito Sumário", "fees": {"100": 1472.42, "70": 1030.69, "60": 883.45, "30": 441.73}}, {"area": "Criminal", "code": "301", "name": "Rito Ordinário", "fees": {"100": 1597.69, "70": 1118.38, "60": 958.61, "30": 479.31}}, {"area": "Infância e Juventude", "code": "502", "name": "Qualquer Procedimento na Área Criminal", "fees": {"100": 794.96, "70": 556.47, "60": 476.98, "30": 238.49}}, {"area": "Infância e Juventude", "code": "501", "name": "Qualquer Procedimento na Área Cível", "fees": {"100": 841.34, "70": 588.94, "60": 504.8, "30": 252.4}}, {"area": "Carta Precatória", "code": "601", "name": "Carta Precatória", "fees": {"100": 427.58, "70": 299.31, "60": 256.55, "30": 128.27}}, {"area": "Plantão", "code": "701", "name": "Plantão", "fees": {"100": 871.96, "70": null, "60": null, "30": null}}, {"area": "Plantão em dias não úteis", "code": "802", "name": "Atuação em dois dias não úteis Consecutivos", "fees": {"100": 941.92, "70": null, "60": null, "30": null}}, {"area": "Plantão em dias não úteis", "code": "801", "name": "Atuação em um dia não útil", "fees": {"100": 706.45, "70": null, "60": null, "30": null}}, {"area": "Cível", "code": "102", "name": "Procedimento Sumário (nomeações até 18/03/2016)", "fees": {"100": 1080.42, "70": 756.29, "60": 648.25, "30": 324.13}}];
+const areas = [...new Set(FEES.map(x=>x.area))];
+const $ = id => document.getElementById(id);
+const money = n => n==null ? 'Não informado na tabela para esse percentual' : n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const pctLabel = p => p+'%';
+const areaEl=$('area'), codeEl=$('codigo'), modoEl=$('modo'), parcialEl=$('parcial'), regraEl=$('regra');
+function fillSelect(el,items,placeholder){el.replaceChildren();const o=document.createElement('option');o.value='';o.textContent=placeholder;el.append(o);items.forEach(item=>{const opt=document.createElement('option');opt.value=item.value;opt.textContent=item.label;el.append(opt);});}
+fillSelect(areaEl,areas.map(x=>({value:x,label:x})),'Selecione a área');
+function fillCodes(){const list=FEES.filter(x=>x.area===areaEl.value).sort((a,b)=>Number(a.code)-Number(b.code));fillSelect(codeEl,list.map(x=>({value:x.code+'|'+x.name,label:x.code+' — '+x.name})),'Selecione o código e a ação');}
+function setVisible(id,show){$(id).classList.toggle('hidden',!show);}
+function selectedFee(){const [code,name]=codeEl.value.split('|');return FEES.find(x=>x.area===areaEl.value&&x.code===code&&x.name===name);}
+function setupRules(){
+ const area=areaEl.value, fee=selectedFee(), isCrim=area==='Criminal'||(area==='Infância e Juventude'&&regraEl.value==='criminal'), isCiv=area==='Cível'||area==='Família e Sucessões'||(area==='Infância e Juventude'&&regraEl.value==='civil');
+ const infant=area==='Infância e Juventude';
+ setVisible('familiaRegraWrap',infant);setVisible('parteWrap',isCiv);setVisible('resultadoCivilWrap',isCiv);setVisible('resultadoCriminalWrap',isCrim);
+ setVisible('recursoWrap',isCiv||isCrim);setVisible('incisoWrap',isCiv&&$('resultadoCivil').value==='extincao485');
+ setVisible('provaIntimacaoWrap',isCiv&&$('resultadoCivil').value==='extincao485'&&['II','III'].includes($('inciso').value));
+ setVisible('autorSemCulpaWrap',isCiv&&$('resultadoCivil').value==='extincao485'&&['IV','V','VI','X'].includes($('inciso').value));
+ setVisible('contrarrazoesWrap',($('recurso').value==='sim')&&(isCiv||isCrim));
+ setVisible('suspensaoWrap',isCrim&&fee&&fee.code==='318');
+ setVisible('júriFaseWrap',isCrim&&fee&&['303','304'].includes(fee.code));
+ setVisible('art366Wrap',isCrim&&fee&&['301','302','315','303','304','502'].includes(fee.code));
+ setVisible('extincaoWrap',isCrim&&$('resultadoCriminal').value==='extincao');
+}
+function setupRuleOptions(){
+ const area=areaEl.value;
+ if(area==='Infância e Juventude') fillSelect(regraEl,[{value:'civil',label:'Procedimento de natureza cível'},{value:'criminal',label:'Procedimento de natureza criminal/infracional'}],'Selecione a regra aplicável');
+ else fillSelect(regraEl,[{value:'civil',label:'Regras cíveis'},{value:'criminal',label:'Regras criminais'}],'Selecione');
+ setVisible('familiaRegraWrap',area==='Infância e Juventude');
+}
+areaEl.addEventListener('change',()=>{fillCodes();setupRuleOptions();setupRules();});
+codeEl.addEventListener('change',()=>{setupRules();});
+['regra','resultadoCivil','inciso','recurso','resultadoCriminal','suspensao','juriFase','art366','extincao'].forEach(id=>$(id).addEventListener('change',setupRules));
+modoEl.addEventListener('change',()=>{setVisible('parcialWrap',modoEl.value==='parcial');setVisible('rulePanel',modoEl.value!=='abandono');setupRules();});
+function amountFor(fee,p){return fee&&fee.fees[String(p)]!=null?fee.fees[String(p)]:null;}
+function resultSchedule(fee,parts,notes,warning){let total=0,hasAmount=true;const schedule=parts.map(p=>{const n=amountFor(fee,p.pct);if(n==null)hasAmount=false;else total+=n;return {...p,amount:n};});return {schedule,total:hasAmount?total:null,notes,warning};}
+function compute(){
+ const fee=selectedFee(), area=areaEl.value, mode=modoEl.value;
+ if(!fee) return {warning:'Selecione o código da ação.'};
+ if(mode==='abandono')return {warning:'A minuta prevê que o abandono injustificado de ações não enseja pagamento de honorários (art. 16, parágrafo único).',noPay:true};
+ if(mode==='parcial'){
+   if(!parcialEl.value)return {warning:'Selecione a hipótese de atuação parcial.'};
+   const p=Number(parcialEl.value);
+   return resultSchedule(fee,[{pct:p,label:`Atuação parcial — ${p}% do valor da tabela`}],['Arts. 12 e 16 da minuta. A hipótese deve estar comprovada e, quando exigido, autorizada pela Defensoria.']);
+ }
+ let isCrim=area==='Criminal'||(area==='Infância e Juventude'&&regraEl.value==='criminal');
+ let isCiv=area==='Cível'||area==='Família e Sucessões'||(area==='Infância e Juventude'&&regraEl.value==='civil');
+ if(area==='Infância e Juventude'&&!regraEl.value)return {warning:'Selecione se o procedimento da Infância e Juventude segue regra cível ou criminal/infracional.'};
+ if(isCiv){
+  const outcome=$('resultadoCivil').value, party=$('parte').value, appeal=$('recurso').value==='sim';
+  if(outcome==='acordo_duplo')return resultSchedule(fee,[{pct:70,label:'70% na homologação do acordo'}],['Art. 9º, III, “a”: participação de um advogado para cada parte.']);
+  if(outcome==='acordo_unico')return resultSchedule(fee,[{pct:100,label:'100% na homologação do acordo'}],['Art. 9º, III, “b”: único advogado para duas ou mais partes.']);
+  if(outcome==='extincao485'){
+    const inciso=$('inciso').value;
+    if(['I','VII'].includes(inciso))return {warning:'Art. 10, I: nos incisos I e VII do art. 485 do CPC, não é devida certidão de honorários a nenhuma das partes.',noPay:true};
+    if(['II','III'].includes(inciso)){
+      if($('provaIntimacao').value!=='sim')return {warning:'Art. 10, II: para os incisos II e III, a minuta condiciona os honorários à comprovação da intimação pessoal prévia do autor. Sem essa comprovação, não é possível calcular o pagamento previsto.',noPay:true};
+      return resultSchedule(fee,[{pct:70,label:'70% — condicionado à comprovação da intimação pessoal prévia do autor'}],['Art. 10, II.']);
+    }
+    if(['IV','V','VI','X'].includes(inciso)){
+      if(party==='reu')return resultSchedule(fee,[{pct:70,label:'70% — advogado da parte ré'}],['Art. 10, II.']);
+      if($('autorSemCulpa').value==='sim')return resultSchedule(fee,[{pct:70,label:'70% — condicionado a recurso de pagamento e comprovação'}],['Art. 10, II: advogado do autor somente se comprovar que não concorreu para a extinção, por recurso de pagamento com sentença e certidão.']);
+      return {warning:'Art. 10, II: para o advogado do autor, o percentual de 70% depende de comprovar que não deu causa à extinção e apresentar recurso de pagamento com os documentos exigidos.',noPay:true};
+    }
+    return resultSchedule(fee,[{pct:70,label:'70% — para ambas as partes'}],['Art. 10, III: incisos VIII e IX.']);
+  }
+  let pct, schedule=[],notes=[];
+  if(party==='autor'){
+   if(outcome==='autor_total'){pct=appeal?70:100;schedule=[{pct,label:appeal?'70% após a sentença':'100% após o trânsito em julgado'}];if(appeal){schedule.push({pct:30,label:'30% após trânsito em julgado do acórdão'});notes.push('O saldo de 30% depende de recurso da parte contrária e apresentação de contrarrazões.');}}
+   else {pct=appeal?60:60;schedule=[{pct:60,label:appeal?'60% após a sentença':'60% após o trânsito em julgado'}];if(appeal)schedule.push({pct:40,label:'40% após trânsito em julgado do acórdão'});}
+  } else {
+   if(outcome==='autor_improcedente'){schedule=[{pct:appeal?70:100,label:appeal?'70% após a sentença':'100% após o trânsito em julgado'}];if(appeal){schedule.push({pct:30,label:'30% após trânsito em julgado do acórdão'});notes.push('O saldo de 30% depende de recurso da parte contrária e apresentação de contrarrazões.');}}
+   else {schedule=[{pct:60,label:appeal?'60% após a sentença':'60% após o trânsito em julgado'}];if(appeal)schedule.push({pct:40,label:'40% após trânsito em julgado do acórdão'});}
+  }
+  if(appeal&&notes.length&&$('contrarrazoes').value!=='sim')return {warning:'A minuta condiciona a parcela final de 30% à apresentação de contrarrazões. Marque “Sim” somente se elas foram apresentadas.'};
+  return resultSchedule(fee,schedule,notes.concat(['Art. 9º da minuta.']));
+ }
+ if(isCrim){
+  const outcome=$('resultadoCriminal').value, appeal=$('recurso').value==='sim';
+  if(fee.code==='318'){
+    const s=$('suspensao').value;
+    if(s==='concessao')return resultSchedule(fee,[{pct:30,label:'30% de antecipação após a decisão de suspensão'}],['Art. 6º, I.']);
+    if(s==='cumprimento')return resultSchedule(fee,[{pct:70,label:'70% após cumprimento do período de prova e trânsito em julgado da extinção'}],['Art. 6º, II.']);
+    if(s==='rev_absolutoria_sem')return resultSchedule(fee,[{pct:70,label:'70% restantes com trânsito em julgado'}],['Art. 6º, III, “a”.']);
+    if(s==='rev_absolutoria_com')return resultSchedule(fee,[{pct:40,label:'40% com a sentença'},{pct:30,label:'30% com trânsito em julgado do acórdão'}],['Art. 6º, III, “b”: condicionado à apresentação de contrarrazões.']);
+    return resultSchedule(fee,[{pct:40,label:'40% com a sentença'},{pct:30,label:'30% com trânsito em julgado do acórdão'}],['Art. 6º, III, “c”: condicionado à apresentação de recurso ou contrarrazões.']);
+  }
+  if($('art366Wrap').classList.contains('hidden')===false&&$('art366').value==='sim')return resultSchedule(fee,[{pct:30,label:'30% após efetivação da produção antecipada de provas'}],['Art. 5º. A hipótese exige suspensão nos termos do art. 366 do CPP e efetiva produção antecipada de provas.']);
+  if(fee.code==='310')return resultSchedule(fee,[{pct:30,label:'30% pela atuação em execução penal'}],['Art. 7º. Atuação recursal pode gerar nova certidão no mesmo percentual.']);
+  if(outcome==='extincao'){
+    if($('extincao').value==='sim')return {warning:'A minuta remete o pagamento em caso de cumprimento de ANPP à regra específica da Cláusula Vigésima Quarta, § 4º. Essa regra não foi codificada aqui; confira o termo integral antes de fixar valor.'};
+    return resultSchedule(fee,[{pct:100,label:'100% nos casos de extinção da punibilidade'}],['Art. 3º, III, salvo cumprimento de ANPP.']);
+  }
+  if(['303','304'].includes(fee.code)){
+    const fase=$('juriFase').value;
+    if(fase==='primeira'){
+      if(outcome==='pronuncia')return resultSchedule(fee,[{pct:70,label:'70% quando da sentença de pronúncia'},{pct:30,label:'30% após julgamento do recurso e trânsito em julgado do acórdão'}],['Art. 4º, I, “b”.']);
+      if(outcome==='impronuncia')return resultSchedule(fee,appeal?[{pct:70,label:'70% quando da sentença'},{pct:30,label:'30% após trânsito em julgado do acórdão'}]:[{pct:100,label:'100% após trânsito em julgado'}],['Art. 4º, I, “a”.']);
+    }
+    if(fase==='segunda'){
+      if(outcome==='segundo_juri')return resultSchedule(fee,[{pct:60,label:'60% após trânsito em julgado da decisão'}],['Art. 4º, II, “c”.']);
+      if(outcome==='absolutoria')return resultSchedule(fee,appeal?[{pct:70,label:'70% da tabela'},{pct:30,label:'30% após trânsito em julgado do recurso'}]:[{pct:100,label:'100% após trânsito em julgado'}],['Art. 4º, II, “a”.']);
+      if(outcome==='condenatoria')return resultSchedule(fee,[{pct:70,label:'70% quando da sentença'},{pct:30,label:'30% após trânsito em julgado do recurso'}],['Art. 4º, II, “b”.']);
+    }
+  }
+  if(outcome==='absolutoria')return resultSchedule(fee,appeal?[{pct:70,label:'70% da tabela'},{pct:30,label:'30% após trânsito em julgado do acórdão'}]:[{pct:100,label:'100% após trânsito em julgado'}],['Art. 3º, I.']);
+  if(outcome==='condenatoria')return resultSchedule(fee,[{pct:70,label:'70% após a sentença'},{pct:30,label:'30% após trânsito em julgado do acórdão'}],['Art. 3º, II.']);
+  return resultSchedule(fee,[{pct:70,label:'70% após a sentença'},{pct:30,label:'30% após trânsito em julgado do acórdão'}],['Art. 8º: extinção não prevista expressamente nos artigos anteriores.']);
+ }
+ // Special categories without a dedicated percentage rule in the supplied Título IV:
+ if(area==='Plantão'||area==='Plantão em dias não úteis')return resultSchedule(fee,[{pct:100,label:'100% — valor da tabela de plantão'}],['Art. 13: para plantões, vale a tabela vigente à época da indicação.']);
+ return resultSchedule(fee,[{pct:100,label:'100% — valor integral da tabela'}],['A minuta e a tabela fornecidas não detalham, neste simulador, um critério específico de fracionamento para esta categoria. Confirme o procedimento aplicável.']);
+}
+function firstBusinessDay(year, monthIndex){
+  const d = new Date(year, monthIndex, 1);
+  while(d.getDay()===0 || d.getDay()===6) d.setDate(d.getDate()+1);
+  return d;
+}
+function paymentDateFromProtocol(value){
+  if(!value) return null;
+  const [year, month, day] = value.split('-').map(Number);
+  return firstBusinessDay(year, (month - 1) + (day <= 25 ? 2 : 3));
+}
+function formatDate(date){
+  return date ? date.toLocaleDateString('pt-BR') : '—';
+}
+function renderResult(data){
+ const el=$('resultContent');el.replaceChildren();const fee=selectedFee();
+ if(data.noPay){const box=document.createElement('div');box.className='warning';box.textContent=data.warning;el.append(box);$('result').classList.add('show');$('result').scrollIntoView({behavior:'smooth',block:'start'});return;}
+ if(data.warning&&!data.schedule){const box=document.createElement('div');box.className='warning';box.textContent=data.warning;el.append(box);$('result').classList.add('show');$('result').scrollIntoView({behavior:'smooth',block:'start'});return;}
+ const top=document.createElement('div');top.className='resultbox';
+ const code=document.createElement('div');code.className='muted';code.textContent=`${fee.area} · Código ${fee.code} · ${fee.name}`;top.append(code);
+ const total=document.createElement('div');total.className='amount';total.textContent=data.total===null?'Consulte a tabela':money(data.total);top.append(total);
+ const sub=document.createElement('div');sub.className='muted';sub.textContent=data.total===null?'Um ou mais percentuais não possuem valor publicado na linha correspondente do Anexo II.':'Total estimado das parcelas calculadas conforme os percentuais selecionados.';top.append(sub);el.append(top);
+ const table=document.createElement('table');table.className='schedule';table.innerHTML='<thead><tr><th>Etapa / condição</th><th>Percentual</th><th>Valor da tabela</th></tr></thead>';const tbody=document.createElement('tbody');
+ data.schedule.forEach(p=>{const tr=document.createElement('tr');[p.label,pctLabel(p.pct),money(p.amount)].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td)});tbody.append(tr)});table.append(tbody);el.append(table);
+  const protocolValue=$('dataProtocolo').value;
+  if(protocolValue){
+    const protocolDate=new Date(protocolValue+'T12:00:00');
+    const paymentDate=paymentDateFromProtocol(protocolValue);
+    const paymentBox=document.createElement('div');paymentBox.className='resultbox';
+    const paymentTitle=document.createElement('strong');paymentTitle.textContent='Previsão de pagamento';paymentBox.append(paymentTitle);
+    const protocolInfo=document.createElement('p');protocolInfo.className='muted';protocolInfo.textContent='Data de protocolo/cadastro: '+formatDate(protocolDate);paymentBox.append(protocolInfo);
+    const paymentValue=document.createElement('div');paymentValue.className='amount';paymentValue.textContent=formatDate(paymentDate);paymentBox.append(paymentValue);
+    const paymentHelp=document.createElement('div');paymentHelp.className='muted';paymentHelp.textContent=Number(protocolValue.slice(8,10))<=25?'Cadastro até o dia 25: primeiro dia útil do segundo mês subsequente.':'Cadastro a partir do dia 26: primeiro dia útil do terceiro mês subsequente.';paymentBox.append(paymentHelp);
+    const calendarNote=document.createElement('div');calendarNote.className='help';calendarNote.textContent='O cálculo considera sábados e domingos; feriados nacionais, estaduais ou municipais podem alterar o primeiro dia útil. Confirme o calendário oficial.';paymentBox.append(calendarNote);
+    el.append(paymentBox);
+  }
+ if(data.notes?.length){const h=document.createElement('p');h.innerHTML='<strong>Fundamento e observações</strong>';el.append(h);const ul=document.createElement('ul');data.notes.forEach(n=>{const li=document.createElement('li');li.textContent=n;ul.append(li)});el.append(ul);}
+ if(data.warning){const w=document.createElement('div');w.className='warning';w.textContent=data.warning;el.append(w);}
+ const d=$('dataEvento').value;if(d&&d<'2026-05-01'){const w=document.createElement('div');w.className='warning';w.textContent='A data informada é anterior a 01/05/2026. Os arquivos fornecidos não incluem a tabela histórica aplicável à data do ato; o valor acima usa a tabela do Anexo II fornecida, indicada como vigente a partir de 01/05/2026. Confirme a tabela vigente na data processual.';el.append(w);}
+ const note=document.createElement('div');note.className='ok';note.textContent='Confira os requisitos de efetiva prestação do serviço, documentação, certidão, recurso e condições específicas antes de usar este resultado para protocolo.';el.append(note);
+ const actions=document.createElement('div');actions.className='actions';const print=document.createElement('button');print.className='btn secondary';print.type='button';print.textContent='Imprimir resultado';print.onclick=()=>window.print();actions.append(print);el.append(actions);
+ $('result').classList.add('show');$('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('form').addEventListener('submit',e=>{e.preventDefault();if(!$('form').reportValidity())return;if(modoEl.value==='parcial'&&!parcialEl.value){parcialEl.focus();return;}const d=compute();renderResult(d);});
+$('limpar').addEventListener('click',()=>{$('form').reset();$('result').classList.remove('show');$('resultContent').replaceChildren();fillSelect(areaEl,areas.map(x=>({value:x,label:x})),'Selecione a área');fillSelect(codeEl,[],'Selecione a área primeiro');setupRuleOptions();setVisible('parcialWrap',false);setVisible('rulePanel',true);});
+setupRuleOptions();setupRules();
+</script></body></html>
